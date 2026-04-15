@@ -1,0 +1,273 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .hotd-root {
+    min-height: 100vh;
+    background: #0a0608;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Crimson Text', Georgia, serif;
+  }
+
+  .bg-canvas {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 100%, #3d0a00 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, #1a0500 0%, transparent 50%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, #1a0500 0%, transparent 50%),
+      linear-gradient(180deg, #080406 0%, #0f060a 40%, #1a0808 100%);
+  }
+
+  .embers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ember {
+    position: absolute;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes float {
+    0%   { transform: translateY(100vh) translateX(0) scale(1); opacity: 0; }
+    10%  { opacity: 0.9; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-10vh) translateX(var(--drift)) scale(0.3); opacity: 0; }
+  }
+
+  .scales-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(60deg, transparent, transparent 18px, rgba(180,60,20,0.03) 18px, rgba(180,60,20,0.03) 19px),
+      repeating-linear-gradient(-60deg, transparent, transparent 18px, rgba(180,60,20,0.03) 18px, rgba(180,60,20,0.03) 19px);
+  }
+
+  .card {
+    position: relative;
+    z-index: 10;
+    width: min(420px, 92vw);
+    background: rgba(15, 6, 10, 0.92);
+    border: 1px solid rgba(180, 80, 20, 0.35);
+    border-radius: 4px;
+    padding: 3rem 2.5rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(200, 60, 0, 0.15), 0 0 120px rgba(180, 40, 0, 0.08), inset 0 0 40px rgba(0,0,0,0.5);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(200,80,20,0.3) 0%, transparent 40%, transparent 60%, rgba(200,80,20,0.15) 100%);
+    pointer-events: none;
+  }
+
+  .corner-ornament {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: rgba(200,100,30,0.6);
+    border-style: solid;
+  }
+  .corner-ornament.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .corner-ornament.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+  .corner-ornament.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+  .corner-ornament.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .dragon-icon {
+    font-size: 48px;
+    margin-bottom: 0.75rem;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(255,100,20,0.6));
+    animation: breathe 4s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255,100,20,0.5)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,140,20,0.8)); transform: scale(1.04); }
+  }
+
+  .site-title {
+    font-family: 'Cinzel', 'Times New Roman', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #e8c070;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(230,160,60,0.4);
+    margin-bottom: 0.4rem;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.8rem 0;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(180,100,30,0.5), transparent);
+  }
+  .divider-diamond {
+    width: 5px; height: 5px;
+    background: rgba(220,140,50,0.7);
+    transform: rotate(45deg);
+  }
+
+  .subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: rgba(180, 120, 50, 0.9);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+  }
+
+  .tagline {
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba(200, 160, 100, 0.8);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .discord-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    background: #5865F2;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .discord-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  }
+  .discord-btn:hover {
+    background: #4752d4;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(88,101,242,0.4);
+  }
+  .discord-btn:active { transform: translateY(0); }
+
+  .discord-svg {
+    width: 22px; height: 22px; flex-shrink: 0;
+  }
+
+  .legal {
+    margin-top: 1.25rem;
+    font-size: 0.78rem;
+    color: rgba(150,100,60,0.7);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .flame-divider {
+    margin: 1.5rem 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .flame-line {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,80,20,0.4));
+  }
+  .flame-line.right { background: linear-gradient(90deg, rgba(200,80,20,0.4), transparent); }
+  .flame-dot { width: 4px; height: 4px; background: rgba(220,100,30,0.6); border-radius: 50%; }
+</style>
+
+<div class="hotd-root">
+  <div class="bg-canvas"></div>
+  <div class="scales-bg"></div>
+  <div class="embers" id="embers"></div>
+
+  <div class="card">
+    <div class="corner-ornament tl"></div>
+    <div class="corner-ornament tr"></div>
+    <div class="corner-ornament bl"></div>
+    <div class="corner-ornament br"></div>
+
+    <span class="dragon-icon">🐉</span>
+
+    <div class="site-title">HOTD RP</div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="subtitle">Arbre généalogique des Sept Couronnes</div>
+
+    <p class="tagline">Connectez-vous avec Discord pour enrichir<br>l'histoire de Westeros</p>
+
+    <button class="discord-btn" onclick="sendPrompt('Je veux reproduire cette page de connexion — peux-tu me faire le code complet React/Next.js avec intégration Discord OAuth ?')">
+      <svg class="discord-svg" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60.105 4.898A58.55 58.55 0 0 0 45.58.465a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.232 0-.485-1.164-1.201-2.587-1.826-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.525 4.433.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.107 4.487 12.025 7.213 17.837 9.019a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.835-1.806 11.754-4.532 17.86-9.019a.228.228 0 0 0 .093-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.826 7.156-6.38 7.156z" fill="#fff"/>
+      </svg>
+      Se connecter avec Discord
+    </button>
+
+    <div class="flame-divider">
+      <div class="flame-line"></div>
+      <div class="flame-dot"></div>
+      <div class="flame-line right"></div>
+    </div>
+
+    <p class="legal">En vous connectant, vous acceptez de contribuer<br>à l'univers collaboratif de HOTD RP</p>
+  </div>
+</div>
+
+<script>
+const embers = document.getElementById('embers');
+for (let i = 0; i < 30; i++) {
+  const e = document.createElement('div');
+  e.className = 'ember';
+  const size = Math.random() * 3 + 1;
+  const hue = Math.random() * 30 + 10;
+  const left = Math.random() * 100;
+  const duration = Math.random() * 6 + 5;
+  const delay = Math.random() * 8;
+  const drift = (Math.random() - 0.5) * 80;
+  e.style.cssText = `
+    width: ${size}px; height: ${size}px;
+    left: ${left}%;
+    background: hsl(${hue}, 100%, 65%);
+    box-shadow: 0 0 ${size * 2}px hsl(${hue}, 100%, 65%);
+    animation-duration: ${duration}s;
+    animation-delay: ${delay}s;
+    --drift: ${drift}px;
+  `;
+  embers.appendChild(e);
+}
+</script>
