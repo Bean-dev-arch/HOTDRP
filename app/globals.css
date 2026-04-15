@@ -2,111 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
-
-:root {
-  --font-cinzel: 'Cinzel', serif;
-  --font-crimson: 'Crimson Text', serif;
+/* 1. RESET GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* 2. LA RACINE DU PROJET (.hotd-root) */
 .hotd-root {
-  min-height: 100vh;
-  background: #0a0608;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  font-family: var(--font-crimson);
+    min-height: 100vh;
+    background: #0a0608;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Crimson Text', Georgia, serif;
+    color: white;
 }
 
-.bg-canvas {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, #3d0a00 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, #1a0500 0%, transparent 50%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, #1a0500 0%, transparent 50%),
-    linear-gradient(180deg, #080406 0%, #0f060a 40%, #1a0808 100%);
-}
-
-/* --- Styles des braises animées --- */
-.ember {
-  position: absolute;
-  border-radius: 50%;
-  animation: float linear infinite;
-  opacity: 0;
-}
-
-@keyframes float {
-  0%   { transform: translateY(100vh) translateX(0) scale(1); opacity: 0; }
-  10%  { opacity: 0.9; }
-  90%  { opacity: 0.4; }
-  100% { transform: translateY(-10vh) translateX(var(--drift)) scale(0.3); opacity: 0; }
-}
-
+/* 3. LE MOTIF D'ÉCAILLES (.scales-bg) */
 .scales-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(60deg, transparent, transparent 18px, rgba(180,60,20,0.03) 18px, rgba(180,60,20,0.03) 19px),
-    repeating-linear-gradient(-60deg, transparent, transparent 18px, rgba(180,60,20,0.03) 18px, rgba(180,60,20,0.03) 19px);
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        60deg, 
+        transparent, 
+        transparent 18px, 
+        rgba(180, 60, 20, 0.03) 18px, 
+        rgba(180, 60, 20, 0.03) 19px
+    ), 
+    repeating-linear-gradient(
+        -60deg, 
+        transparent, 
+        transparent 18px, 
+        rgba(180, 60, 20, 0.03) 18px, 
+        rgba(180, 60, 20, 0.03) 19px
+    );
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* --- La Carte --- */
-.card-medieval {
-  position: relative;
-  z-index: 10;
-  width: min(420px, 92vw);
-  background: rgba(15, 6, 10, 0.92);
-  border: 1px solid rgba(180, 80, 20, 0.35);
-  border-radius: 4px;
-  padding: 3rem 2.5rem 2.5rem;
-  text-align: center;
-  box-shadow: 0 0 60px rgba(200, 60, 0, 0.15), 0 0 120px rgba(180, 40, 0, 0.08), inset 0 0 40px rgba(0,0,0,0.5);
+/* 4. ANIMATION DE PULSATION POUR L'EMOJI */
+@keyframes dragon-glow {
+    0% { filter: drop-shadow(0 0 10px rgba(255, 77, 41, 0.4)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 25px rgba(255, 77, 41, 0.7)); transform: scale(1.05); }
+    100% { filter: drop-shadow(0 0 10px rgba(255, 77, 41, 0.4)); transform: scale(1); }
 }
 
 .dragon-icon {
-  font-size: 48px;
-  display: block;
-  filter: drop-shadow(0 0 12px rgba(255,100,20,0.6));
-  animation: breathe 4s ease-in-out infinite;
+    font-size: 5rem;
+    animation: dragon-glow 4s ease-in-out infinite;
+    cursor: default;
+    z-index: 10;
 }
-
-@keyframes breathe {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(255,100,20,0.5)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 20px rgba(255,140,20,0.8)); transform: scale(1.04); }
-}
-
-/* Ajoute ici le reste des styles .divider, .site-title, .discord-btn de ton fichier original */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-}
-
-body {
-  background: black;
-  color: white;
-}
-
-/* Effet de grain pour simuler le vieux film/papier */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.font-cinzel { font-family: var(--font-cinzel), serif; }
-.font-crimson { font-family: var(--font-crimson), serif; }
