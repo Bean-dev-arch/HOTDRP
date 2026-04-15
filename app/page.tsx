@@ -1,83 +1,95 @@
-// Ajoute ceci en haut de ton fichier
-import { supabase } from '@/lib/supabase';
+'use client'; // TRÈS IMPORTANT : permet d'utiliser le bouton et la redirection
+
+import { useState } from 'react';
+import { supabase } from '@/lib/supabase'; // On utilise le fichier de connexion créé à l'étape précédente
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import LoadingScreen from '@/components/LoadingScreen';
 
-// À l'intérieur de ta fonction NewTree()
-const router = useRouter();
+export default function NewTree() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-const handleCreateTree = async (name: string, description: string) => {
-  const { data, error } = await supabase
-    .from('trees')
-    .insert([{ name, description }])
-    .select();
+  // Cette fonction s'exécute quand on clique sur "Créer l'arbre"
+  const handleCreateTree = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-  if (!error) {
-    router.push(`/tree/${data[0].id}`); // Redirige vers le nouvel arbre
-  }
-};
-'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import Embers from '@/components/Embers';
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const description = formData.get('description') as string;
 
-export default function LoginPage() {
-  const supabase = createClientComponentClient();
+    // 1. On récupère l'utilisateur connecté pour savoir qui crée l'arbre
+    const { data: { user } } = await supabase.auth.getUser();
 
-  const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'discord',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    // 2. Envoi vers ta table Supabase "trees"
+    const { data, error } = await supabase
+      .from('trees')
+      .insert([
+        { 
+          name: name, 
+          description: description,
+          created_by: user?.id // Lie l'arbre à l'utilisateur Discord
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      alert("Erreur : " + error.message);
+      setLoading(false);
+    } else {
+      // 3. Si ça marche, on va sur la page de l'arbre fraîchement créé
+      router.push(`/tree/${data.id}`);
+    }
   };
 
+  if (loading) return <LoadingScreen />;
+
   return (
-    <div className="hotd-root">
-      <div className="bg-canvas"></div>
-      <div className="scales-bg"></div>
-      <Embers />
+    <main className="min-h-screen bg-[#0a0608] flex flex-col p-6">
+      <Link href="/dashboard" className="text-[#ff4d29] hover:underline mb-8 flex items-center gap-2">
+        ← Retour
+      </Link>
+      
+      <div className="flex-1 flex items-center justify-center">
+        {/* On lie le formulaire à notre fonction handleCreateTree */}
+        <form onSubmit={handleCreateTree} className="bg-[#0f060a] border border-[#ff4d29]/30 p-8 rounded-lg w-full max-w-lg shadow-2xl">
+          <h2 className="font-cinzel text-2xl text-[#ff4d29] text-center mb-8 uppercase">
+            Créer un nouvel arbre généalogique
+          </h2>
+          
+          <div className="space-y-6">
+            <div>
+              <label className="block text-stone-400 text-sm mb-2">Nom de l'arbre *</label>
+              <input 
+                name="name" 
+                type="text" 
+                required
+                placeholder="Ex: Maison Targaryen" 
+                className="w-full bg-black border border-stone-800 p-3 rounded text-white focus:border-[#ff4d29] outline-none" 
+              />
+            </div>
+            
+            <div>
+              <label className="block text-stone-400 text-sm mb-2">Description</label>
+              <textarea 
+                name="description"
+                placeholder="Décrivez votre arbre généalogique..." 
+                rows={4}
+                className="w-full bg-black border border-stone-800 p-3 rounded text-white focus:border-[#ff4d29] outline-none" 
+              />
+            </div>
 
-      <div className="card-medieval">
-        {/* Ornements aux coins */}
-        <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#c8641e99]"></div>
-        <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#c8641e99]"></div>
-        <div className="absolute bottom-2 left-2 w-5 h-5 border-b border-l border-[#c8641e99]"></div>
-        <div className="absolute bottom-2 right-2 w-5 h-5 border-b border-r border-[#c8641e99]"></div>
-
-        <span className="dragon-icon mb-3">🐉</span>
-
-        <h1 className="site-title font-cinzel text-3xl font-bold text-[#e8c070] tracking-widest uppercase">
-          HOTD RP
-        </h1>
-
-        <div className="flex items-center gap-3 my-4">
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#b4641e80] to-transparent"></div>
-          <div className="w-1.5 h-1.5 bg-[#dc8c32b3] rotate-45"></div>
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-[#b4641e80] via-[#b4641e80] to-transparent"></div>
-        </div>
-
-        <div className="subtitle font-cinzel text-[10px] text-[#b47832e6] tracking-[0.2em] uppercase mb-8">
-          Arbre généalogique des Sept Couronnes
-        </div>
-
-        <p className="tagline font-crimson italic text-[#c8a064cc] mb-8 leading-relaxed text-lg">
-          Connectez-vous avec Discord pour enrichir<br />l'histoire de Westeros
-        </p>
-
-        <button 
-          onClick={handleLogin}
-          className="group relative flex items-center justify-center gap-3 w-full py-3 bg-[#5865F2] hover:bg-[#4752d4] text-white font-cinzel font-bold text-sm tracking-wider uppercase rounded-sm transition-all shadow-lg"
-        >
-          <svg className="w-5 h-5" viewBox="0 0 71 55" fill="currentColor">
-            <path d="M60.105 4.898A58.55 58.55 0 0 0 45.58.465a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.697c-5.456-.817-10.886-.817-16.232 0-.485-1.164-1.201-2.587-1.826-3.697a.228.228 0 0 0-.233-.11 58.386 58.386 0 0 0-14.525 4.433.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.107 4.487 12.025 7.213 17.837 9.019a.23.23 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.17 31.17 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 0 1 .232.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.835-1.806 11.754-4.532 17.86-9.019a.228.228 0 0 0 .093-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.826 7.156-6.38 7.156z" />
-          </svg>
-          Se connecter avec Discord
-        </button>
-
-        <p className="legal mt-6 text-[10px] text-[#96643cb3] italic leading-relaxed font-crimson">
-          En vous connectant, vous acceptez de contribuer<br />à l'univers collaboratif de HOTD RP
-        </p>
+            <button 
+              type="submit"
+              className="w-full bg-[#d32f2f] hover:bg-[#b71c1c] text-white py-4 rounded font-bold flex items-center justify-center gap-2 transition-colors"
+            >
+              💾 Créer l'arbre
+            </button>
+          </div>
+        </form>
       </div>
-    </div>
+    </main>
   );
 }
