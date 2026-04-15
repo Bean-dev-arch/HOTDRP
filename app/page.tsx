@@ -1,9 +1,11 @@
-'use client'; // TRÈS IMPORTANT : permet d'utiliser le bouton et la redirection
+'use client';
 
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+// Vérifie que le chemin vers supabase est bien le bon (nb de points)
+import { supabase } from '../lib/supabase'; 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+// Vérifie que le fichier s'appelle bien LoadingScreen.tsx avec ces majuscules
 import LoadingScreen from '../components/LoadingScreen';
 
 export default function NewTree() {
