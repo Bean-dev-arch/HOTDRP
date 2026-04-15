@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import Link from 'next/link';
-import AddCharacterModal from '@/components/AddCharacterModal';
-
+import AddCharacterModal from '../../../components/AddCharacterModal';
 export default function TreePage({ params }: { params: { id: string } }) {
   // État pour afficher ou masquer la fenêtre d'ajout
   const [showModal, setShowModal] = useState(false);
