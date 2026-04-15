@@ -1,10 +1,10 @@
 'use client'; // TRÈS IMPORTANT : permet d'utiliser le bouton et la redirection
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase'; // On utilise le fichier de connexion créé à l'étape précédente
+import { supabase } from '../lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import LoadingScreen from '@/components/LoadingScreen';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function NewTree() {
   const [loading, setLoading] = useState(false);
