@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #e8c070;
+  --dragon-red: #8b0000;
+}
+
+body {
+  background: #0a0608;
+  color: white;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-crimson), serif;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel), serif;
+}
+
+/* On ajoute ici tes styles spécifiques de ton fichier HTML */
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 100%, #3d0a00 0%, transparent 60%),
+    linear-gradient(180deg, #080406 0%, #0f060a 40%, #1a0808 100%);
+  z-index: -1;
+}
+
+.card {
+  background: rgba(15, 6, 10, 0.8);
+  border: 1px solid rgba(232, 192, 112, 0.2);
+  padding: 3rem;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  text-align: center;
+  position: relative;
+}
