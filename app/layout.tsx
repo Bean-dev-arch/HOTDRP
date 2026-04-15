@@ -1,4 +1,5 @@
 import { Cinzel, Crimson_Text } from 'next/font/google';
+import "./globals.css";
 
 const cinzel = Cinzel({ 
   subsets: ['latin'], 
@@ -11,17 +12,21 @@ const crimson = Crimson_Text({
   variable: '--font-crimson' 
 });
 
-export default function RootLayout({ children }) {
+export const metadata = {
+  title: 'Dragon Lineage - RP',
+  description: 'Forge ta dynastie dans le sang et le feu',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="fr" className={`${cinzel.variable} ${crimson.variable}`}>
-      <body className="bg-black antialiased">
+      <body className="bg-black antialiased text-white">
         {children}
       </body>
-    </html>
-  );
-}
-    <html lang="fr" className={`${cinzel.variable} ${crimson.variable}`}>
-      <body>{children}</body>
     </html>
   );
 }
