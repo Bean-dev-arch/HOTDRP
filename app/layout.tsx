@@ -1,25 +1,25 @@
-import './globals.css';
 import { Cinzel, Crimson_Text } from 'next/font/google';
 
 const cinzel = Cinzel({ 
   subsets: ['latin'], 
-  variable: '--font-cinzel',
-  weight: ['400', '700'] 
+  variable: '--font-cinzel' 
 });
 
 const crimson = Crimson_Text({ 
+  weight: ['400', '600', '700'], 
   subsets: ['latin'], 
-  variable: '--font-crimson',
-  weight: ['400', '600'] 
+  variable: '--font-crimson' 
 });
 
-export const metadata = {
-  title: 'HOTD RP - Lignages',
-  description: 'Arbre généalogique des Sept Couronnes',
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
+    <html lang="fr" className={`${cinzel.variable} ${crimson.variable}`}>
+      <body className="bg-black antialiased">
+        {children}
+      </body>
+    </html>
+  );
+}
     <html lang="fr" className={`${cinzel.variable} ${crimson.variable}`}>
       <body>{children}</body>
     </html>
