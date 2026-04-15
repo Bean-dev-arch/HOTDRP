@@ -1,3 +1,20 @@
+// Ajoute ceci en haut de ton fichier
+import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
+
+// À l'intérieur de ta fonction NewTree()
+const router = useRouter();
+
+const handleCreateTree = async (name: string, description: string) => {
+  const { data, error } = await supabase
+    .from('trees')
+    .insert([{ name, description }])
+    .select();
+
+  if (!error) {
+    router.push(`/tree/${data[0].id}`); // Redirige vers le nouvel arbre
+  }
+};
 'use client';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Embers from '@/components/Embers';
